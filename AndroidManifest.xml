@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
+    <permission
+        android:name="com.aistudio.auriseuphonia.hzkqpw.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.aistudio.auriseuphonia.hzkqpw.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <application
+        android:theme="@style/Theme.MyApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:debuggable="true"
+        android:allowBackup="true"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:extractNativeLibs="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:dataExtractionRules="@xml/data_extraction_rules">
+        <activity
+            android:theme="@style/Theme.MyApplication"
+            android:label="@string/app_name"
+            android:name="com.example.MainActivity"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="content"/>
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="content"/>
+                <data android:mimeType="audio/flac"/>
+                <data android:mimeType="audio/x-flac"/>
+                <data android:mimeType="audio/wav"/>
+                <data android:mimeType="audio/x-wav"/>
+                <data android:mimeType="audio/mpeg"/>
+                <data android:mimeType="audio/mp3"/>
+                <data android:mimeType="audio/aac"/>
+                <data android:mimeType="audio/mp4"/>
+                <data android:mimeType="audio/x-m4a"/>
+                <data android:mimeType="audio/m4a"/>
+                <data android:mimeType="audio/ogg"/>
+                <data android:mimeType="audio/opus"/>
+                <data android:mimeType="audio/x-ms-wma"/>
+                <data android:mimeType="application/ogg"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
+        </activity>
+        <service
+            android:name="com.example.audio.PlaybackService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback"/>
+        <service
+            android:name="com.example.scanner.MediaSyncJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false"/>
+        <receiver
+            android:name="com.example.widget.EuphoniaMediaWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_OPTIONS_CHANGED"/>
+                <action android:name="com.example.auriseuphonia.widget.ACTION_PLAY_PAUSE"/>
+                <action android:name="com.example.auriseuphonia.widget.ACTION_PREV"/>
+                <action android:name="com.example.auriseuphonia.widget.ACTION_NEXT"/>
+                <action android:name="com.example.auriseuphonia.widget.ACTION_SHUFFLE"/>
+                <action android:name="com.example.auriseuphonia.widget.ACTION_REPEAT"/>
+                <action android:name="com.example.auriseuphonia.widget.ACTION_FAVORITE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_media_playback_info"/>
+        </receiver>
+        <receiver
+            android:name="com.example.widget.EuphoniaRoseMediaWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_OPTIONS_CHANGED"/>
+                <action android:name="com.example.auriseuphonia.widget.rose.ACTION_PLAY_PAUSE"/>
+                <action android:name="com.example.auriseuphonia.widget.rose.ACTION_PREV"/>
+                <action android:name="com.example.auriseuphonia.widget.rose.ACTION_NEXT"/>
+                <action android:name="com.example.auriseuphonia.widget.rose.ACTION_SHUFFLE"/>
+                <action android:name="com.example.auriseuphonia.widget.rose.ACTION_REPEAT"/>
+                <action android:name="com.example.auriseuphonia.widget.rose.ACTION_FAVORITE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_media_playback_rose_info"/>
+        </receiver>
+        <service
+            android:name="com.google.firebase.components.ComponentDiscoveryService"
+            android:exported="false"
+            android:directBootAware="true">
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.ai.FirebaseAIRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.appcheck.recaptcha.FirebaseAppCheckRecaptchaRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+        </service>
+        <activity
+            android:name="androidx.compose.ui.tooling.PreviewActivity"
+            android:exported="true"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"/>
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:exported="false"
+            android:authorities="com.aistudio.auriseuphonia.hzkqpw.firebaseinitprovider"
+            android:initOrder="100"
+            android:directBootAware="true"/>
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:exported="false"
+            android:directBootAware="true"/>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            android:authorities="com.aistudio.auriseuphonia.hzkqpw.androidx-startup">
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+                android:value="androidx.startup"/>
+        </provider>
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION"/>
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="true"/>
+        <activity
+            android:theme="@style/Theme.PlayCore.Transparent"
+            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+            android:exported="false"
+            android:stateNotNeeded="true"/>
+    </application>
+</manifest>
